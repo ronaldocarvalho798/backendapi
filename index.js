@@ -11,8 +11,16 @@ const port = process.env.PORT || 3000;
 const usuario = process.env.USUARIO;
 const senha = process.env.SENHA;
 
-app.get('/login', (req, res) => {
-  res.json({ usuario, senha });
+app.use(express.json()); // Necessário para ler o body JSON
+
+app.post('/login', (req, res) => {
+  const { usuario: usuarioEnviado, senha: senhaEnviada } = req.body;
+
+  if (usuarioEnviado === usuario && senhaEnviada === senha) {
+    res.json({ sucesso: true });
+  } else {
+    res.json({ sucesso: false });
+  }
 });
 
 app.listen(port, () => {
